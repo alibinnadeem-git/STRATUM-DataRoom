@@ -1,45 +1,43 @@
 # STRATUM DataRoom
 
-Canonical repository for the STRATUM DataRoom platform.
+Reproducible source repository for STRATUM DataRoom.
 
-## Current baseline
+## Build
+**R7.0 reconstructed baseline — 2026-09-22**
 
-**Latest known release:** R6.8 — Full Google Drive Mirror  
-**Build ID:** `STRATUM_DATAROOM_R6_8_FULL_DRIVE_MIRROR_2026-09-14`
+This is a new clean build reconstructed from the latest documented R6.8 Full Drive Mirror requirements. It is **not represented as byte-for-byte recovery of the unavailable R6.8 source archive**.
 
-### R6.8 behavior
+## Implemented baseline
+- Next.js application shell
+- STRATUM DataRoom UI
+- health API
+- Google Drive service-account client
+- Drive-root discovery/sync endpoint
+- Neon/Postgres schema for rooms, folders, documents, mappings and audit events
+- environment template
+- reproducible npm build configuration
+- no credentials committed
 
-- Configured Google Drive root mirrors into the managed STRATUM DataRoom structure.
-- Each top-level Drive folder becomes a Data Room when not already mapped.
-- Nested Drive folders become managed folders/subfolders.
-- Drive files become managed DataRoom documents.
-- Files directly in the configured Drive root are placed in a dedicated **Drive Root Files** Data Room.
-- Existing mappings are preserved to prevent duplication.
-- Post-deployment flow is intended to run a full Google Drive sync automatically.
+## R6.8 mirror contract
+- top-level Drive folders become Data Rooms
+- nested folders become managed folders/subfolders
+- Drive files become managed documents
+- root files belong in a dedicated Drive Root Files Data Room
+- existing mappings are preserved
+- synchronization must be idempotent
 
-## Release verification status
+## Run
+1. `npm install`
+2. Copy `.env.example` to `.env.local` and configure secrets.
+3. Apply `db/schema.sql` to the target Postgres/Neon database.
+4. `npm run dev`
 
-The R6.8 implementation is the latest identified source baseline. Production verification remains required for the complete full-mirror flow, including:
+## APIs
+- `GET /api/health`
+- `POST /api/drive/sync`
 
-- mapping preservation
-- nested folders
-- root-level files
-- post-deployment synchronization
-- RBAC / permissions
-- CRUD and archive/restore flows
-- UI workflows
-- JARVIS / Spatial Verified / AI Costing integration boundaries
+## Security
+Never commit service-account keys, database URLs, tokens or local environment files.
 
-## Source integrity
-
-Do not replace the R6.8 source with a reconstruction or older R6.x/R5 archive. The canonical source archive previously produced was:
-
-`stratum-dataroom-r6-8-full-drive-mirror-20260914.zip`
-
-Secrets, credentials, service-account keys, database connection strings and local `.env` files must never be committed.
-
-## Production
-
-Historical production target:
-
-`https://stratum-dataroom.vercel.app`
+## Next release gates
+Full persistence materialization, authentication/RBAC, CRUD/archive/restore, recursive Drive traversal, Admin Control Panel, JARVIS context, UAT and production deployment must be verified before calling this feature-equivalent to the historical R6.8 deployment.
