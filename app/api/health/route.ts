@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";
+export async function GET(){return NextResponse.json({ok:true,service:"STRATUM DataRoom",build:"STRATUM_DATAROOM_R7_0_RECONSTRUCTED_FULL_MIRROR_2026-09-22",databaseConfigured:!!process.env.DATABASE_URL,driveConfigured:!!(process.env.GOOGLE_DRIVE_ROOT_ID&&process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL&&process.env.GOOGLE_PRIVATE_KEY)})}
