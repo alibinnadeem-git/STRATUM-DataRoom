@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";import {listDriveTree} from "../../../../lib/drive";
+export async function POST(){try{const files=await listDriveTree();return NextResponse.json({ok:true,indexed:files.length,items:files,note:"Discovery endpoint for reconstructed baseline; persistence mapping requires configured schema."})}catch(e){return NextResponse.json({ok:false,error:e instanceof Error?e.message:"sync failed"},{status:500})}}
